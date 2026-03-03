@@ -1,9 +1,15 @@
 class Comment {
-  final int id;
-  final String name;
-  final String email;
-  final String body;
+  int id;
+  String name;
+  String email;
+  String body;
 
+  // Comment(int id, String name, String email, String body) {
+  //   this.id = id;
+  //   this.name = name;
+  //   this.email = email;
+  //   this.body = body;
+  // }
   Comment({required this.id, required this.name, required this.email, required this.body});
 
   factory Comment.fromJson(Map<String, dynamic> json) {
