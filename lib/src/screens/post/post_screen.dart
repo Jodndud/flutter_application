@@ -21,7 +21,7 @@ class _PostScreenState extends State<PostScreen> {
   final CommentService _commentService = CommentService();
 
   Post? _post;
-  List<Comment> _comments = [];
+  List<Comment> _comments = []; 
   bool _isLoading = true;
 
   @override

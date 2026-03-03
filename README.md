@@ -7,6 +7,8 @@ lib/
 ├── app/
 │   ├── router/         # GoRoute 라우트 정의
 ├── src/
+│   ├── /constants      # 상수 정의(AppColor, AppSize, Url, ...)
+│   ├── /controller     # 컨트롤러(비즈니스로직, 상태관리, 데이터보관)
 │   ├── /models         # 모델 정의
 │   ├── /screens        # 페이지
 │   ├── /services       # api호출 로직
