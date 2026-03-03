@@ -1,60 +1,55 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import '../../models/post.dart';
-import '../../services/post/post_api_service.dart';
-import '../../../app/router/router.dart';
+import 'package:flutter_application/src/controllers/post_controller.dart';
+import 'package:flutter_application/app/router/router.dart';
 
-class HomeScreen extends StatefulWidget {
+class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    // PostListControllerProvider 구독
+    final postsAsync = ref.watch(postListControllerProvider);
 
-class _HomeScreenState extends State<HomeScreen> {
-  final PostService _apiService = PostService();
-
-  List<Post> _posts = [];
-  bool _isLoading = true;
-
-  @override
-  void initState() {
-    super.initState();
-    _loadPosts();
-  }
-  
-  Future<void> _loadPosts() async {print("Home: 데이터 바인딩 완료");
-    try {
-      final posts = await _apiService.fetchPosts();
-      setState(() {
-        _posts = posts;
-        _isLoading = false;
-      });
-    } catch (e) {
-      setState(() => _isLoading = false);
-      debugPrint('Error: $e');
-    }
-  }
-  
-  @override
-  Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Post List')),
-      body: _isLoading
-          ? const Center(child: CircularProgressIndicator())
-          : ListView.builder(
-              itemCount: _posts.length,
-              itemBuilder: (context, index) {
-                final post = _posts[index];
-                return ListTile(
-                  leading: CircleAvatar(child: Text('${post.id}')),
-                  title: Text(post.title, maxLines: 1, overflow: TextOverflow.ellipsis),
-                  onTap: () {
-                    context.push('${Routes.post}/${post.id}');
-                  },
-                );
+      appBar: AppBar(
+        title: const Text('Post List'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.refresh),
+            onPressed: () => ref.read(postListControllerProvider.notifier).refresh(),
+          ),
+        ],
+      ),
+      body: postsAsync.when(
+        data: (posts) => ListView.builder(
+          itemCount: posts.length,
+          itemBuilder: (context, index) {
+            final post = posts[index];
+            return ListTile(
+              leading: CircleAvatar(child: Text('${post.id}')),
+              title: Text(post.title, maxLines: 1, overflow: TextOverflow.ellipsis),
+              onTap: () {
+                context.push('${Routes.post}/${post.id}');
               },
-            ),
+            );
+          },
+        ),
+        loading: () => const Center(child: CircularProgressIndicator()),
+        error: (error, stack) => Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text('Error: $error'),
+              ElevatedButton(
+                onPressed: () => ref.read(postListControllerProvider.notifier).refresh(),
+                child: const Text('Retry'),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

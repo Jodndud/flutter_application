@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../models/comment.dart';
+import 'package:flutter_application/src/models/comment.dart';
 
 class CommentList extends StatelessWidget {
   final List<Comment> comments;

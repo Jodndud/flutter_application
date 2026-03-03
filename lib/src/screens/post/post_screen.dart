@@ -1,70 +1,43 @@
 import 'package:flutter/material.dart';
-import '../../models/post.dart';
-import '../../models/comment.dart';
-import '../../services/post/post_api_service.dart';
-import '../../services/comment/comment_api_service.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_application/src/controllers/post_controller.dart';
+import 'package:flutter_application/src/controllers/comment_controller.dart';
+import 'package:flutter_application/src/widgets/post_content.dart';
+import 'package:flutter_application/src/widgets/comment_list.dart';
 
-import '../../widgets/post_content.dart';
-import '../../widgets/comment_list.dart';
-
-class PostScreen extends StatefulWidget {
-  final int postId; // 리스트에서 넘겨받을 ID
+class PostScreen extends ConsumerWidget {
+  final int postId;
 
   const PostScreen({super.key, required this.postId});
 
   @override
-  State<PostScreen> createState() => _PostScreenState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    // 포스트 상세 정보 구독
+    final postAsync = ref.watch(postDetailControllerProvider(postId));
+    // 댓글 목록 구독
+    final commentsAsync = ref.watch(commentListControllerProvider(postId));
 
-class _PostScreenState extends State<PostScreen> {
-  final PostService _postService = PostService();
-  final CommentService _commentService = CommentService();
-
-  Post? _post;
-  List<Comment> _comments = []; 
-  bool _isLoading = true;
-
-  @override
-  void initState() {
-    super.initState();
-    _loadData();
-  }
-
-  Future<void> _loadData() async {
-    try {
-      // 웹의 Promise.all과 동일: 두 API를 동시에 호출하여 시간을 단축합니다.
-      final results = await Future.wait([
-        _postService.fetchPostDetail(widget.postId),
-        _commentService.fetchComments(widget.postId),
-      ]);
-
-      setState(() {
-        _post = results[0] as Post;
-        _comments = results[1] as List<Comment>;
-        _isLoading = false;
-      });
-    } catch (e) {
-      setState(() => _isLoading = false);
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Post #${widget.postId}')),
-      body: _isLoading 
-        ? const Center(child: CircularProgressIndicator())
-        : SingleChildScrollView( // 웹의 overflow-y: auto 역할
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                PostContent(post: _post!),
-                const Divider(height: 40),
-                CommentList(comments: _comments),
-              ],
-            ),
+      appBar: AppBar(title: Text('Post #$postId')),
+      body: postAsync.when(
+        data: (post) => SingleChildScrollView(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              PostContent(post: post),
+              const Divider(height: 40),
+              commentsAsync.when(
+                data: (comments) => CommentList(comments: comments),
+                loading: () => const Center(child: CircularProgressIndicator()),
+                error: (error, stack) => Text('Comments error: $error'),
+              ),
+            ],
           ),
+        ),
+        loading: () => const Center(child: CircularProgressIndicator()),
+        error: (error, stack) => Center(child: Text('Post detail error: $error')),
+      ),
     );
   }
 }

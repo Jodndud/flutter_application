@@ -1,9 +1,9 @@
 import 'package:go_router/go_router.dart';
 import 'package:flutter/material.dart';
 
-import './router.dart'; 
-import '../../src/screens/home/home_screen.dart';
-import '../../src/screens/post/post_screen.dart';
+import 'package:flutter_application/app/router/router.dart';
+import 'package:flutter_application/src/screens/home/home_screen.dart';
+import 'package:flutter_application/src/screens/post/post_screen.dart';
 
 final appRouter = GoRouter(
   initialLocation: Routes.home,

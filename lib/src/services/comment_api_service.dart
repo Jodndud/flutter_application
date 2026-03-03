@@ -1,6 +1,6 @@
 import 'dart:convert';
-import '../../models/comment.dart';
-import '../base_api_service.dart';
+import 'package:flutter_application/src/models/comment.dart';
+import 'package:flutter_application/src/services/base_api_service.dart';
 
 class CommentService extends BaseApiService {
 

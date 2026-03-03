@@ -1,6 +1,6 @@
 import 'dart:convert';
-import '../../models/post.dart';
-import '../base_api_service.dart';
+import 'package:flutter_application/src/models/post.dart';
+import 'package:flutter_application/src/services/base_api_service.dart';
 
 class PostService extends BaseApiService {
   
