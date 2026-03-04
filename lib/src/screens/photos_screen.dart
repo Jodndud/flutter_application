@@ -19,31 +19,33 @@ class PhotosScreen extends ConsumerWidget {
         ),
         title: const Text('Photo List'),
       ),
-      body: SizedBox(
-        width: double.infinity,
-        height: double.infinity,
-        child: Padding(
-          padding: EdgeInsets.all(10),
-          child: photoAsync.when(
-            data: (photos) => ListView.builder(
-              itemCount: photos.length,
-              itemBuilder: (context, index) {
-                final photo = photos[index];
-                return ListTile(
-                  title: Text(photo.title),
-                  subtitle: Text(photo.url),
-                  trailing: Icon(Icons.arrow_forward_ios),
-                  onTap: () {
-                    context.go('${Routes.photo}/${photo.id}');
-                  },
-                );
-              },
-            ),
-            loading: () => const Center(child: CircularProgressIndicator()),
-            error: (error, stack) =>
-                Center(child: Text('Photo list error: $error')),
+      body: photoAsync.when(
+        data: (photos) => GridView.builder(
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
           ),
+          itemCount: photos.length,
+          itemBuilder: (context, index) {
+            final photo = photos[index];
+
+            return ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                elevation: 0,
+                padding: EdgeInsets.zero,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(0),
+                ),
+              ),
+              onPressed: () => context.go('${Routes.photo}/${photo.id}'),
+              child: Container(
+                alignment: Alignment.center,
+                child: Text('ID: ${photo.id}'),
+              ),
+            );
+          },
         ),
+        loading: () => const Center(child: CircularProgressIndicator()),
+        error: (error, stack) => Center(child: Text('에러 발생: $error')),
       ),
     );
   }
