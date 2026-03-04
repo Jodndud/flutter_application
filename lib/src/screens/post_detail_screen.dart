@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_application/src/controllers/post_controller.dart';
 import 'package:flutter_application/src/controllers/comment_controller.dart';
 import 'package:flutter_application/src/widgets/post_content.dart';
 import 'package:flutter_application/src/widgets/comment_list.dart';
+import 'package:flutter_application/app/router/router.dart';
 
-class PostScreen extends ConsumerWidget {
+class PostDetailScreen extends ConsumerWidget {
   final int postId;
 
-  const PostScreen({super.key, required this.postId});
+  const PostDetailScreen({super.key, required this.postId});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -18,7 +20,13 @@ class PostScreen extends ConsumerWidget {
     final commentsAsync = ref.watch(commentListControllerProvider(postId));
 
     return Scaffold(
-      appBar: AppBar(title: Text('Post #$postId')),
+      appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () => context.go(Routes.posts),
+        ),
+        title: Text(postAsync.value?.title ?? 'Post Detail'),
+      ),
       body: postAsync.when(
         data: (post) => SingleChildScrollView(
           padding: const EdgeInsets.all(16.0),

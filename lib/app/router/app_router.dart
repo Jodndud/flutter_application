@@ -1,9 +1,11 @@
 import 'package:go_router/go_router.dart';
 import 'package:flutter/material.dart';
-
 import 'package:flutter_application/app/router/router.dart';
-import 'package:flutter_application/src/screens/home/home_screen.dart';
-import 'package:flutter_application/src/screens/post/post_screen.dart';
+import 'package:flutter_application/src/screens/home_screen.dart';
+import 'package:flutter_application/src/screens/posts_screen.dart';
+import 'package:flutter_application/src/screens/post_detail_screen.dart';
+import 'package:flutter_application/src/screens/photos_screen.dart';
+import 'package:flutter_application/src/screens/photo_detail_screen.dart';
 
 final appRouter = GoRouter(
   initialLocation: Routes.home,
@@ -14,16 +16,34 @@ final appRouter = GoRouter(
     ),
 
     GoRoute(
-      path: '${Routes.post}/:postId', // postId를 URL 매개변수로 받음
+      path: Routes.posts,
+      builder: (context, state) => const PostsScreen(),
+    ),
+
+    GoRoute(
+      path: '${Routes.post}/:postId',
       builder: (context, state) {
         final postIdString = state.pathParameters['postId'];
         final postId = int.tryParse(postIdString ?? '');
-        return PostScreen(postId: postId ?? 0);
+        return PostDetailScreen(postId: postId ?? 0);
+      }
+    ),
+
+    GoRoute(
+      path: Routes.photos,
+      builder: (context, state) => const PhotosScreen(),
+    ),
+
+    GoRoute(
+      path: '${Routes.photo}/:photoId',
+      builder: (context, state) {
+        final photoIdString = state.pathParameters['photoId'];
+        final photoId = int.tryParse(photoIdString ?? '');
+        return PhotoDetailScreen(photoId: photoId ?? 0);
       }
     ),
   ],
 
-  // 404 페이지 처리 (웹의 '*' 경로와 유사)
   errorBuilder: (context, state) => Scaffold(
     body: Center(child: Text('페이지를 찾을 수 없습니다: ${state.uri}')),
   ),
