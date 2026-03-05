@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application/src/constants/app_colors.dart';
 import 'package:flutter_application/src/widgets/user_list.dart';
 import 'package:go_router/go_router.dart';
 
@@ -12,10 +11,9 @@ class UsersScreen extends StatelessWidget {
       appBar: AppBar(
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
-          onPressed: () => context.go('/'),
+          onPressed: () => context.pop(),
         ),
         title: const Text('연락처'),
-        backgroundColor: AppColors.backgroundColor,
         elevation: 0,
         scrolledUnderElevation: 0,
       ),

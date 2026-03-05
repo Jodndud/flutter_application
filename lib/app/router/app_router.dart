@@ -1,3 +1,5 @@
+import 'package:flutter_application/src/screens/todo_add_screen.dart';
+import 'package:flutter_application/src/screens/todo_screen.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application/app/router/router.dart';
@@ -44,6 +46,16 @@ final appRouter = GoRouter(
     GoRoute(
       path: Routes.users,
       builder: (context, state) => const UsersScreen(),
+    ),
+
+    GoRoute(
+      path: Routes.todos,
+      builder: (context, state) => const TodoScreen(),
+    ),
+
+    GoRoute(
+      path: Routes.todoAdd,
+      builder: (context, state) => const TodoAddScreen(),
     ),
   ],
 

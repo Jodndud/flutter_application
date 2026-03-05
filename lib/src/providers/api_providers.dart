@@ -1,3 +1,4 @@
+import 'package:flutter_application/src/services/todo_api_service.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_application/src/services/post_api_service.dart';
 import 'package:flutter_application/src/services/comment_api_service.dart';
@@ -22,4 +23,9 @@ final photoServiceProvider = Provider<PhotoService>((ref) {
 // UserService 인스턴스를 제공하는 Provider
 final userServiceProvider = Provider<UserService>((ref) {
   return UserService();
+});
+
+// TodoService 인스턴스를 제공하는 Provider
+final todoServiceProvider = Provider<TodoService>((ref) {
+  return TodoService();
 });

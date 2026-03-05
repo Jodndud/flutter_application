@@ -7,4 +7,6 @@ class Routes {
   static const String photos = '/photos';
   static const String photo = '/photo';
   static const String users = '/users';
+  static const String todos = '/todos';
+  static const String todoAdd = '/todo/add';
 }

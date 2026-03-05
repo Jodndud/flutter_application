@@ -6,6 +6,7 @@ const _menuItems = [
   {'title': 'Post', 'route': Routes.posts},
   {'title': 'Photo', 'route': Routes.photos},
   {'title': 'User', 'route': Routes.users},
+  {'title': 'Todo', 'route': Routes.todos},
 ];
 
 class HomeServiceList extends StatefulWidget {
@@ -33,9 +34,7 @@ class _HomeServiceListState extends State<HomeServiceList> {
                 borderRadius: BorderRadius.circular(16),
               ),
             ),
-            onPressed: () {
-              context.go(item['route'] as String);
-            },
+            onPressed: () => context.push(item['route'] as String),
             child: Padding(
               padding: const EdgeInsets.fromLTRB(0, 26, 0, 26),
               child: Text(
