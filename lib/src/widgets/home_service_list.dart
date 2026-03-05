@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 const _menuItems = [
   {'title': 'Post', 'route': Routes.posts},
   {'title': 'Photo', 'route': Routes.photos},
+  {'title': 'User', 'route': Routes.users},
 ];
 
 class HomeServiceList extends StatefulWidget {

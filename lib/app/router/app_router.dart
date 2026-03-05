@@ -6,14 +6,12 @@ import 'package:flutter_application/src/screens/posts_screen.dart';
 import 'package:flutter_application/src/screens/post_detail_screen.dart';
 import 'package:flutter_application/src/screens/photos_screen.dart';
 import 'package:flutter_application/src/screens/photo_detail_screen.dart';
+import 'package:flutter_application/src/screens/users_screen.dart';
 
 final appRouter = GoRouter(
   initialLocation: Routes.home,
   routes: [
-    GoRoute(
-      path: Routes.home,
-      builder: (context, state) => const HomeScreen(),
-    ),
+    GoRoute(path: Routes.home, builder: (context, state) => const HomeScreen()),
 
     GoRoute(
       path: Routes.posts,
@@ -26,7 +24,7 @@ final appRouter = GoRouter(
         final postIdString = state.pathParameters['postId'];
         final postId = int.tryParse(postIdString ?? '');
         return PostDetailScreen(postId: postId ?? 0);
-      }
+      },
     ),
 
     GoRoute(
@@ -40,11 +38,15 @@ final appRouter = GoRouter(
         final photoIdString = state.pathParameters['photoId'];
         final photoId = int.tryParse(photoIdString ?? '');
         return PhotoDetailScreen(photoId: photoId ?? 0);
-      }
+      },
+    ),
+
+    GoRoute(
+      path: Routes.users,
+      builder: (context, state) => const UsersScreen(),
     ),
   ],
 
-  errorBuilder: (context, state) => Scaffold(
-    body: Center(child: Text('페이지를 찾을 수 없습니다: ${state.uri}')),
-  ),
+  errorBuilder: (context, state) =>
+      Scaffold(body: Center(child: Text('페이지를 찾을 수 없습니다: ${state.uri}'))),
 );

@@ -6,4 +6,5 @@ class Routes {
   static const String post = '/post';
   static const String photos = '/photos';
   static const String photo = '/photo';
+  static const String users = '/users';
 }
